@@ -14,6 +14,7 @@ gem "webpacker", "~> 5.x"
 
 gem "sanitize"
 
+gem "mysql2"
 gem "pg"
 gem "pghero"
 
