@@ -2,11 +2,11 @@
 class CreateActions < ActiveRecord::Migration[5.0]
   def change
     create_table :actions do |t|
-      t.string :action_type, null: false
-      t.string :action_option
-      t.string :target_type
+      t.string :action_type, null: false, limit: 50
+      t.string :action_option, limit: 255
+      t.string :target_type, limit: 50
       t.integer :target_id
-      t.string :user_type
+      t.string :user_type, limit: 50
       t.integer :user_id
 
       t.timestamps

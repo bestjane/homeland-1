@@ -60,6 +60,8 @@ module UsersHelper
     else
       raw img
     end
+  rescue
+    ''
   end
 
   def user_level_tag(user)

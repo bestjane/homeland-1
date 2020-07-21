@@ -74,7 +74,12 @@ class TopicsController < ApplicationController
     @topic.user_id = current_user.id
     @topic.node_id = params[:node] || topic_params[:node_id]
     @topic.team_id = ability_team_id
-    @topic.save
+    if verify_complex_captcha?(@topic, keep_session: true) && @topic.save
+      redirect_to "/topics/#{@topic.id}"
+    else
+      @topic.errors.add(:base, t('rucaptcha.invalid'))
+      render :new
+    end
   end
 
   def preview
@@ -160,7 +165,7 @@ class TopicsController < ApplicationController
     end
 
     def topic_params
-      params.require(:topic).permit(:title, :body, :node_id, :team_id)
+      params.require(:topic).permit(:title, :body, :node_id, :team_id, :_rucaptcha)
     end
 
     def ability_team_id

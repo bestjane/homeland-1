@@ -1,6 +1,6 @@
 <%= render 'node_selector', node: @topic.node %>
 
-<%= form_for @topic, remote: true, class: "form", html: { tb: 'edit-topic' } do |f| %>
+<%= form_for @topic, class: "form", html: { tb: 'edit-topic' } do |f| %>
   <%= render "shared/error_messages", target: @topic %>
   <%= f.hidden_field :node_id %>
 
@@ -28,6 +28,14 @@
       <%= f.select :team_id, current_user.team_options, { include_blank: "不要关联组织" }, { class: "form-control" } %>
     </div>
     <% end %>
+  <% end %>
+
+  <% if @topic.new_record? %>
+    <div class="form-group">
+      <div class="input-group input-group-lg">
+        <%= render "/shared/captcha_input" %>
+      </div>
+    </div>
   <% end %>
 
   <div class="form-actions hide-ios">

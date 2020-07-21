@@ -3,8 +3,8 @@
 class InitPgDb < ActiveRecord::Migration[4.2]
   def change
     create_table "authorizations", force: :cascade do |t|
-      t.string   "provider", null: false
-      t.string   "uid", limit: 1000, null: false
+      t.string   "provider", limit: 100, null: false
+      t.string   "uid", limit: 100, null: false
       t.integer  "user_id", null: false
       t.datetime "created_at"
       t.datetime "updated_at"
@@ -16,7 +16,7 @@ class InitPgDb < ActiveRecord::Migration[4.2]
       t.text     "body", null: false
       t.text     "body_html"
       t.integer  "user_id", null: false
-      t.string   "commentable_type"
+      t.string   "commentable_type", limit: 100
       t.integer  "commentable_id"
       t.datetime "deleted_at"
       t.datetime "created_at"
@@ -35,7 +35,7 @@ class InitPgDb < ActiveRecord::Migration[4.2]
     end
 
     create_table "locations", force: :cascade do |t|
-      t.string   "name",                    null: false
+      t.string   "name",                    null: false, limit: 100
       t.integer  "users_count", default: 0, null: false
       t.datetime "created_at"
       t.datetime "updated_at"
@@ -90,7 +90,7 @@ class InitPgDb < ActiveRecord::Migration[4.2]
     create_table "oauth_access_grants", force: :cascade do |t|
       t.integer  "resource_owner_id", null: false
       t.integer  "application_id",    null: false
-      t.string   "token",             null: false
+      t.string   "token",             null: false, limit: 200
       t.integer  "expires_in",        null: false
       t.text     "redirect_uri",      null: false
       t.datetime "created_at",        null: false
@@ -103,8 +103,8 @@ class InitPgDb < ActiveRecord::Migration[4.2]
     create_table "oauth_access_tokens", force: :cascade do |t|
       t.integer  "resource_owner_id"
       t.integer  "application_id"
-      t.string   "token", null: false
-      t.string   "refresh_token"
+      t.string   "token", null: false, limit: 200
+      t.string   "refresh_token", limit: 200
       t.integer  "expires_in"
       t.datetime "revoked_at"
       t.datetime "created_at", null: false
@@ -117,14 +117,14 @@ class InitPgDb < ActiveRecord::Migration[4.2]
 
     create_table "oauth_applications", force: :cascade do |t|
       t.string   "name",                      null: false
-      t.string   "uid",                       null: false
+      t.string   "uid",                       null: false, limit: 200
       t.string   "secret",                    null: false
       t.text     "redirect_uri",              null: false
       t.string   "scopes", default: "", null: false
       t.datetime "created_at"
       t.datetime "updated_at"
       t.integer  "owner_id"
-      t.string   "owner_type"
+      t.string   "owner_type", limit: 200
     end
 
     add_index "oauth_applications", %w(owner_id owner_type), name: "index_oauth_applications_on_owner_id_and_owner_type", using: :btree
@@ -170,7 +170,7 @@ class InitPgDb < ActiveRecord::Migration[4.2]
     add_index "replies", ["user_id"], name: "index_replies_on_user_id", using: :btree
 
     create_table "sections", force: :cascade do |t|
-      t.string   "name",                   null: false
+      t.string   "name",                   null: false, limit: 200
       t.integer  "sort", default: 0, null: false
       t.datetime "created_at"
       t.datetime "updated_at"
@@ -190,14 +190,14 @@ class InitPgDb < ActiveRecord::Migration[4.2]
     create_table "topics", force: :cascade do |t|
       t.integer  "user_id",                            null: false
       t.integer  "node_id",                            null: false
-      t.string   "title",                              null: false
+      t.string   "title",                              null: false, limit: 255
       t.text     "body",                               null: false
       t.text     "body_html"
       t.integer  "last_reply_id"
       t.integer  "last_reply_user_id"
-      t.string   "last_reply_user_login"
-      t.string   "node_name"
-      t.string   "who_deleted"
+      t.string   "last_reply_user_login", limit: 255
+      t.string   "node_name", limit: 255
+      t.string   "who_deleted", limit: 255
       t.integer  "last_active_mark"
       t.boolean  "lock_node", default: false
       t.datetime "suggested_at"
@@ -221,40 +221,40 @@ class InitPgDb < ActiveRecord::Migration[4.2]
     add_index "topics", ["user_id"], name: "index_topics_on_user_id", using: :btree
 
     create_table "users", force: :cascade do |t|
-      t.string   "login",                                  null: false
-      t.string   "name",                                   null: false
-      t.string   "email",                                  null: false
-      t.string   "email_md5",                              null: false
+      t.string   "login",                                  null: false, limit: 255
+      t.string   "name",                                   null: false, limit: 255
+      t.string   "email",                                  null: false, limit: 255
+      t.string   "email_md5",                              null: false, limit: 255
       t.boolean  "email_public", default: false, null: false
-      t.string   "location"
+      t.string   "location", limit: 255
       t.integer  "location_id"
-      t.string   "bio"
-      t.string   "website"
-      t.string   "company"
-      t.string   "github"
-      t.string   "twitter"
-      t.string   "qq"
-      t.string   "avatar"
+      t.string   "bio", limit: 255
+      t.string   "website", limit: 255
+      t.string   "company", limit: 255
+      t.string   "github", limit: 255
+      t.string   "twitter", limit: 255
+      t.string   "qq", limit: 255
+      t.string   "avatar", limit: 255
       t.boolean  "verified",               default: false, null: false
       t.boolean  "hr",                     default: false, null: false
       t.integer  "state",                  default: 1,     null: false
-      t.string   "tagline"
-      t.string   "co"
+      t.string   "tagline", limit: 255
+      t.string   "co", limit: 255
       t.datetime "created_at"
       t.datetime "updated_at"
-      t.string   "encrypted_password", default: "", null: false
-      t.string   "reset_password_token"
+      t.string   "encrypted_password", default: "", null: false, limit: 255
+      t.string   "reset_password_token", limit: 255
       t.datetime "reset_password_sent_at"
       t.datetime "remember_created_at"
       t.integer  "sign_in_count", default: 0, null: false
       t.datetime "current_sign_in_at"
       t.datetime "last_sign_in_at"
-      t.string   "current_sign_in_ip"
-      t.string   "last_sign_in_ip"
-      t.string   "password_salt",          default: "",    null: false
-      t.string   "persistence_token",      default: "",    null: false
-      t.string   "single_access_token",    default: "",    null: false
-      t.string   "perishable_token",       default: "",    null: false
+      t.string   "current_sign_in_ip", limit: 255
+      t.string   "last_sign_in_ip", limit: 255
+      t.string   "password_salt",          default: "",    null: false, limit: 255
+      t.string   "persistence_token",      default: "",    null: false, limit: 255
+      t.string   "single_access_token",    default: "",    null: false, limit: 255
+      t.string   "perishable_token",       default: "",    null: false, limit: 255
       t.integer  "topics_count",           default: 0,     null: false
       t.integer  "replies_count",          default: 0,     null: false
       t.string   "private_token"
