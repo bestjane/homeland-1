@@ -6,7 +6,7 @@ default: &default
   encoding: utf8mb4
   host: homeland_mysql
   username: root
-  password:
+  password: mac#Mr0924
 
 development:
   <<: *default
